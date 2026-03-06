@@ -1,0 +1,43 @@
+name: Autograder
+on:
+  push:
+    branches: ["*"]
+  workflow_dispatch:
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+
+      - name: Fetch grader
+        run: |
+          git clone https://x-access-token:${{ secrets.GRADER_PAT }}@github.com/${{ github.repository_owner }}/hw2-grader.git .grader
+
+      - name: Run autograder
+        run: PYTHONPATH=".:$PYTHONPATH" python .grader/grade.py
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Display results
+        if: always()
+        run: |
+          if [ -f grading_report.json ]; then
+            echo "## Grading Report" >> $GITHUB_STEP_SUMMARY
+            python3 -c "
+          import json
+          with open('grading_report.json') as f:
+              r = json.load(f)
+          print('| Task | Points | Max |')
+          print('|------|--------|-----|')
+          for t in r.get('tasks', []):
+              s = '✅' if t['points']==t['max_points'] else ('⚠️' if t['points']>0 else '❌')
+              print(f'| {s} {t[\"name\"]} | {t[\"points\"]:.1f} | {t[\"max_points\"]:.1f} |')
+          print(f'| **TOTAL** | **{r[\"total_points\"]:.1f}** | **{r[\"max_points\"]:.1f}** |')
+          " >> $GITHUB_STEP_SUMMARY
+          fi
