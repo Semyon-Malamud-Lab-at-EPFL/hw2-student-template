@@ -1,5 +1,5 @@
 """
-Tasks 1 & 3
+Tasks 1 & 3.
 Implement every function below. Do NOT change function signatures.
 """
 import numpy as np
