@@ -21,7 +21,7 @@ N_TRAIN        = _derive_n_train(REPO_NAME)
 SHRINKAGE_LIST = np.logspace(-4, 4, 30).tolist()
 ALPHA_LASSO    = np.logspace(-6, -1, 20).tolist()
 
-DATA_PATH      = os.path.join(os.path.dirname(__file__), "data", "data.csv")
+DATA_PATH      = os.path.join(os.path.dirname(__file__), "data", "data.pkl")
 TARGET_COL     = "r_1"
 DATE_COL       = "date"
 ID_COL         = "id"

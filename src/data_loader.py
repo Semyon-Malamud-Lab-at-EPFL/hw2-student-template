@@ -11,12 +11,12 @@ def load_data(filepath: str) -> pd.DataFrame:
     Task 1a  [3 pts]
 
     Reads the raw dataset from disk and prepares the date information
-    that all downstream tasks rely on. It must load the CSV file,
+    that all downstream tasks rely on. It must load the pickle file,
     ensure that the 'date' column is stored as a proper datetime type,
     and create a new integer column called 'yyyymm' that encodes each
     date as year * 100 + month (e.g. March 2005 becomes 200503).
 
-    Input:  A string filepath pointing to the .csv file.
+    Input:  A string filepath pointing to the .pkl file.
     Output: A pandas.DataFrame containing all original columns, with
             'date' converted to datetime and a new 'yyyymm' column
             appended.
